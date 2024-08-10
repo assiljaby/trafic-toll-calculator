@@ -1,5 +1,5 @@
-# Rrafic Toll Catculator - Microcervices
+# Trafic Toll Catculator - Microcervices
 Work in progress...
 
 ## TODO
-- [] Simulate the OBU
+- [ ] Simulate the OBU
