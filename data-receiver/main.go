@@ -1,13 +1,11 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
 
 	"github.com/assiljaby/trafic-toll-calculator/types"
-	"github.com/confluentinc/confluent-kafka-go/kafka"
 	"github.com/gorilla/websocket"
 )
 
@@ -29,27 +27,15 @@ var upgrader = websocket.Upgrader{
 type DataReceiver struct {
 	msgch chan types.OBUData
 	conn *websocket.Conn
-	producer *kafka.Producer
+	producer DataProducer
 }
 
 func NewDataReceiver() (*DataReceiver, error) {
-	p, err := kafka.NewProducer(&kafka.ConfigMap{"bootstrap.servers": "localhost"})
+	p, err := NewKafkaProducer()
 	if err != nil {
 		return nil, err
 	}
-	// Delivery report handler for produced messages
-	go func() {
-		for e := range p.Events() {
-			switch ev := e.(type) {
-			case *kafka.Message:
-				if ev.TopicPartition.Error != nil {
-					fmt.Printf("Delivery failed: %v\n", ev.TopicPartition)
-				} else {
-					fmt.Printf("Delivered message to %v\n", ev.TopicPartition)
-				}
-			}
-		}
-	}()
+
 	return &DataReceiver{
 		msgch: make(chan types.OBUData, 128),
 		producer: p,
@@ -67,21 +53,7 @@ func (dr *DataReceiver) handleWS(w http.ResponseWriter, r *http.Request) {
 }
 
 func (dr *DataReceiver) produceData(data types.OBUData) error {
-	d, err := json.Marshal(data)
-	if err != nil {
-		return err
-	}
-
-	// Produce messages to topic (asynchronously)
-	topic := kafkaTopic
-	err = dr.producer.Produce(&kafka.Message{
-		TopicPartition: kafka.TopicPartition{Topic: &topic, Partition: kafka.PartitionAny},
-		Value:          d,
-	}, nil)
-	if err != nil {
-		return err
-	}
-	return nil
+	return dr.producer.ProduceData(data)
 }
 
 func (dr *DataReceiver) wsReceiverLoop() {
