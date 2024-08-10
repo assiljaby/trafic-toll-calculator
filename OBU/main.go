@@ -1,11 +1,15 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"math"
 	"math/rand"
 	"time"
+
+	"github.com/gorilla/websocket"
 )
+
+const wsEndpoint = "ws://127.0.0.1:30000/ws"
 
 var sendInterval = time.Second
 
@@ -35,6 +39,10 @@ func generateOBUIDs(n int) []int {
 
 func main() {
 	OBUIDs := generateOBUIDs(20)
+	conn, _, err := websocket.DefaultDialer.Dial(wsEndpoint, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
 	for {
 		for _, id := range OBUIDs {
 			lat, long := generateLatLong()
@@ -43,7 +51,9 @@ func main() {
 				Lat: lat,
 				Long: long,
 			}
-			fmt.Printf("%v\n", data)
+			if err := conn.WriteJSON(data); err != nil {
+				log.Fatal(err)
+			}
 		}
 		time.Sleep(sendInterval)
 	}

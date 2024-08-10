@@ -1,5 +1,5 @@
 obu:
-	go build -o bin/obu obu/main.go
+	go build -o bin/obu OBU/main.go
 	bin/obu
 
 .PHONY: obu
