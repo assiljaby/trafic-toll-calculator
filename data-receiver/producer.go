@@ -14,9 +14,10 @@ type DataProducer interface {
 
 type kafkaProducer struct {
 	producer *kafka.Producer
+	topic string
 }
 
-func NewKafkaProducer() (*kafkaProducer, error) {
+func NewKafkaProducer(topic string) (DataProducer, error) {
 	p, err := kafka.NewProducer(&kafka.ConfigMap{"bootstrap.servers": "localhost"})
 	if err != nil {
 		return nil, err
@@ -29,7 +30,7 @@ func NewKafkaProducer() (*kafkaProducer, error) {
 				if ev.TopicPartition.Error != nil {
 					fmt.Printf("Delivery failed: %v\n", ev.TopicPartition)
 				} else {
-					fmt.Printf("Delivered message to %v\n", ev.TopicPartition)
+					// fmt.Printf("Delivered message to %v\n", ev.TopicPartition)
 				}
 			}
 		}
@@ -46,10 +47,8 @@ func (kp *kafkaProducer) ProduceData(data types.OBUData) error {
 		return err
 	}
 
-	// Produce messages to topic (asynchronously)
-	topic := kafkaTopic
 	return kp.producer.Produce(&kafka.Message{
-		TopicPartition: kafka.TopicPartition{Topic: &topic, Partition: kafka.PartitionAny},
+		TopicPartition: kafka.TopicPartition{Topic: &kp.topic, Partition: kafka.PartitionAny},
 		Value:          d,
 	}, nil)
 }
