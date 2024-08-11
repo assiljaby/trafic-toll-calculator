@@ -24,17 +24,18 @@ This project is a microservices-based system designed to calculate traffic tolls
 1. **Clone the repository:**
     ```bash
     git clone https://github.com/assiljaby/trafic-toll-calculator
-    ```
+    
 
 2. **Runu Kafka Container:**
     ```bash
     docker compose up -d
-    ```
-or
-    ```bash
+    
+    or
+    
     docker run -d -p 9092:9092 --name broker apache/kafka:latest
-    ```
-Work in progress...
+
+    
+**Work in progress...**
 
 ## TODO
 - [x] Simulate the OBU
