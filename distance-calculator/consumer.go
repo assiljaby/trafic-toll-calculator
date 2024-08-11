@@ -1,8 +1,10 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 
+	"github.com/assiljaby/trafic-toll-calculator/types"
 	"github.com/confluentinc/confluent-kafka-go/v2/kafka"
 	"github.com/sirupsen/logrus"
 )
@@ -10,9 +12,10 @@ import (
 type KafkaConsumer struct {
 	consumer *kafka.Consumer
 	isRunning bool
+	calculatorSvc CalculateServicer
 }
 
-func NewKafkaConsumer(topic string) (*KafkaConsumer, error) {
+func NewKafkaConsumer(topic string, csvc CalculateServicer) (*KafkaConsumer, error) {
 	c, err := kafka.NewConsumer(&kafka.ConfigMap{
 		"bootstrap.servers": "localhost",
 		"group.id":          "myGroup",
@@ -29,6 +32,7 @@ func NewKafkaConsumer(topic string) (*KafkaConsumer, error) {
 	return &KafkaConsumer{
 		consumer: c,
 		isRunning: false,
+		calculatorSvc: csvc,
 	}, nil
 }
 
@@ -45,6 +49,18 @@ func (kc *KafkaConsumer) readMessageloop() {
 			logrus.Errorf("kafka consume error: %s\n", err)
 			continue
 		}
-		fmt.Println(msg)
+
+		var data types.OBUData
+		if err := json.Unmarshal(msg.Value, &data); err != nil {
+			logrus.Errorf("Json parsing error: %s\n", err)
+			continue
+		}
+
+		distance, err := kc.calculatorSvc.CalculateDistance(data)
+		if err != nil {
+			logrus.Errorf("Failed to calculate distance: %s\n", err)
+			continue
+		}
+		fmt.Printf("Distance: %.2f\n", distance)
 	}
 }
