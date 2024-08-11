@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/assiljaby/trafic-toll-calculator/types"
-	"github.com/confluentinc/confluent-kafka-go/kafka"
+	"github.com/confluentinc/confluent-kafka-go/v2/kafka"
 )
 
 type DataProducer interface {
@@ -30,7 +30,7 @@ func NewKafkaProducer(topic string) (DataProducer, error) {
 				if ev.TopicPartition.Error != nil {
 					fmt.Printf("Delivery failed: %v\n", ev.TopicPartition)
 				} else {
-					// fmt.Printf("Delivered message to %v\n", ev.TopicPartition)
+					fmt.Printf("Delivered message to %v\n", ev.TopicPartition)
 				}
 			}
 		}
@@ -38,6 +38,7 @@ func NewKafkaProducer(topic string) (DataProducer, error) {
 
 	return &kafkaProducer{
 		producer: p,
+		topic: topic,
 	}, nil
 }
 

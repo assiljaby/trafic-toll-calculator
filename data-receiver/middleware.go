@@ -22,7 +22,7 @@ func (lm *loggerMiddleware) ProduceData(data types.OBUData) error {
 	defer func(start time.Time) {
 		logrus.WithFields(logrus.Fields{
 			"obuID": data.OBUID,
-			"laat": data.Lat,
+			"lat": data.Lat,
 			"long": data.Long,
 			"Took": time.Since(start),
 		}).Info("Producing to Kafka")
