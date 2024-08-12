@@ -40,6 +40,9 @@ This project is a microservices-based system designed to calculate traffic tolls
 ## TODO
 - [x] Simulate the OBU
 - [x] Implement data receiver
+- [x] Implement logger middleware for the receiver
 - [x] Implement Distancec calculator
+- [x] Implement logger middleware for the calculator
 - [ ] Implement invoice aggregator
+- [ ] Implement logger middleware for the invoice aggregator
 - [ ] Implement GRPC and proto buffers
