@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 
 	"github.com/assiljaby/trafic-toll-calculator/types"
 	"github.com/confluentinc/confluent-kafka-go/v2/kafka"
@@ -61,6 +60,7 @@ func (kc *KafkaConsumer) readMessageloop() {
 			logrus.Errorf("Failed to calculate distance: %s\n", err)
 			continue
 		}
-		fmt.Printf("Distance: %.2f\n", distance)
+		// fmt.Printf("Distance: %.2f\n", distance)
+		_ = distance
 	}
 }

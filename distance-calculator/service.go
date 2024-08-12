@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"math"
 
 	"github.com/assiljaby/trafic-toll-calculator/types"
@@ -27,7 +26,7 @@ func NewCalculateService() CalculateServicer {
 }
 
 func (cs *CalculateService) CalculateDistance(data types.OBUData) (float64, error) {
-	fmt.Println("Calculating Distance...")
+	// fmt.Println("Calculating Distance...")
 	distance := 0.0
 	if nPoints := len(cs.points); nPoints > 1 {
 		distance = calculateDistance(cs.points[nPoints-1].lat, cs.points[nPoints-1].long, data.Lat, data.Long)
