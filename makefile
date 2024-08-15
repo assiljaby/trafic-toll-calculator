@@ -10,6 +10,10 @@ calculator:
 	go build -o bin/calculator ./distance-calculator
 	bin/calculator
 
+agg:
+	go build -o bin/aggregator ./aggregator
+	bin/aggregator
+
 invoicer:
 	go build -o bin/invoicer ./invoicer
 	bin/invoicer
