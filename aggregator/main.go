@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"flag"
+	"fmt"
 	"net/http"
 
 	"github.com/assiljaby/trafic-toll-calculator/types"
@@ -14,8 +15,13 @@ func main() {
 	store := NewMemoryStore()
 	svc := NewInvoiceAggregator(store)
 
+	makeHttpTransport(*listenPort, svc)
+}
+
+func makeHttpTransport(listenPort string, svc Aggregator) {
+	fmt.Println("HTTP transport running on port:", listenPort)
 	http.HandleFunc("/aggregate", handleAggragate(svc))
-	http.ListenAndServe(*listenPort, nil)
+	http.ListenAndServe(listenPort, nil)
 }
 
 func handleAggragate(svc Aggregator) http.HandlerFunc {
