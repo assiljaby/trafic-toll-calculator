@@ -26,7 +26,7 @@ This project is a microservices-based system designed to calculate traffic tolls
     git clone https://github.com/assiljaby/trafic-toll-calculator
     
 
-2. **Runu Kafka Container:**
+2. **Run Kafka Container:**
     ```bash
     docker compose up -d
     
@@ -43,6 +43,7 @@ This project is a microservices-based system designed to calculate traffic tolls
 - [x] Implement logger middleware for the receiver
 - [x] Implement Distancec calculator
 - [x] Implement logger middleware for the calculator
-- [ ] Implement invoice aggregator
-- [ ] Implement logger middleware for the invoice aggregator
+- [x] Implement invoice aggregator
+- [x] Implement logger middleware for the invoice aggregator
+- [x] Implement HTTP transport
 - [ ] Implement GRPC and proto buffers
