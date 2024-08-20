@@ -2,19 +2,22 @@ package main
 
 import (
 	"encoding/json"
+	"time"
 
+	"github.com/assiljaby/trafic-toll-calculator/aggregator/client"
 	"github.com/assiljaby/trafic-toll-calculator/types"
 	"github.com/confluentinc/confluent-kafka-go/v2/kafka"
 	"github.com/sirupsen/logrus"
 )
 
 type KafkaConsumer struct {
-	consumer *kafka.Consumer
-	isRunning bool
+	consumer      *kafka.Consumer
+	isRunning     bool
 	calculatorSvc CalculateServicer
+	aggClient     *client.Client
 }
 
-func NewKafkaConsumer(topic string, csvc CalculateServicer) (*KafkaConsumer, error) {
+func NewKafkaConsumer(topic string, csvc CalculateServicer, aggClient *client.Client) (*KafkaConsumer, error) {
 	c, err := kafka.NewConsumer(&kafka.ConfigMap{
 		"bootstrap.servers": "localhost",
 		"group.id":          "myGroup",
@@ -24,14 +27,15 @@ func NewKafkaConsumer(topic string, csvc CalculateServicer) (*KafkaConsumer, err
 		return nil, err
 	}
 
-	if err = c.SubscribeTopics([]string{topic}, nil) ;err != nil {
+	if err = c.SubscribeTopics([]string{topic}, nil); err != nil {
 		return nil, err
-	}	 
+	}
 
 	return &KafkaConsumer{
-		consumer: c,
-		isRunning: false,
+		consumer:      c,
+		isRunning:     false,
 		calculatorSvc: csvc,
+		aggClient:     aggClient,
 	}, nil
 }
 
@@ -60,7 +64,16 @@ func (kc *KafkaConsumer) readMessageloop() {
 			logrus.Errorf("Failed to calculate distance: %s\n", err)
 			continue
 		}
-		// fmt.Printf("Distance: %.2f\n", distance)
-		_ = distance
+
+		req := types.Distance{
+			Value: distance,
+			Unix:  time.Now().UnixNano(),
+			OBUID: data.OBUID,
+		}
+
+		if err := kc.aggClient.AggregateInvoice(req); err != nil {
+			logrus.Errorf("failed to send data to aggregate client: %v", err)
+			continue
+		}
 	}
 }
