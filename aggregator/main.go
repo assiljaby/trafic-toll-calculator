@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/assiljaby/trafic-toll-calculator/types"
 )
@@ -22,7 +23,30 @@ func main() {
 func makeHttpTransport(listenPort string, svc Aggregator) {
 	fmt.Println("HTTP transport running on port:", listenPort)
 	http.HandleFunc("/aggregate", handleAggragate(svc))
+	http.HandleFunc("/invoice", handleGetInvoice(svc))
 	http.ListenAndServe(listenPort, nil)
+}
+
+func handleGetInvoice(svc Aggregator) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		values, ok := r.URL.Query()["obu"]
+		if !ok {
+			writeJSON(w, http.StatusBadRequest, map[string]string{"err": "No obu in request"})
+			return
+		}
+
+		obuID, err := strconv.Atoi(values[0])
+		if err != nil {
+			writeJSON(w, http.StatusBadRequest, map[string]string{"err": "malformatted obu id"})
+			return
+		}
+		invoice, err := svc.CalculateInvoice(obuID)
+		if err != nil {
+			writeJSON(w, http.StatusInternalServerError, map[string]string{"err": err.Error()})
+			return
+		}
+		writeJSON(w, http.StatusOK, invoice)
+	}
 }
 
 func handleAggragate(svc Aggregator) http.HandlerFunc {
