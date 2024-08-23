@@ -20,47 +20,135 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
-type Test struct {
-	Someint              int32    `protobuf:"varint,1,opt,name=someint,proto3" json:"someint,omitempty"`
+type None struct {
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *Test) Reset()         { *m = Test{} }
-func (m *Test) String() string { return proto.CompactTextString(m) }
-func (*Test) ProtoMessage()    {}
-func (*Test) Descriptor() ([]byte, []int) {
+func (m *None) Reset()         { *m = None{} }
+func (m *None) String() string { return proto.CompactTextString(m) }
+func (*None) ProtoMessage()    {}
+func (*None) Descriptor() ([]byte, []int) {
 	return fileDescriptor_17e2b1304cc35acb, []int{0}
 }
 
-func (m *Test) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_Test.Unmarshal(m, b)
+func (m *None) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_None.Unmarshal(m, b)
 }
-func (m *Test) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_Test.Marshal(b, m, deterministic)
+func (m *None) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_None.Marshal(b, m, deterministic)
 }
-func (m *Test) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Test.Merge(m, src)
+func (m *None) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_None.Merge(m, src)
 }
-func (m *Test) XXX_Size() int {
-	return xxx_messageInfo_Test.Size(m)
+func (m *None) XXX_Size() int {
+	return xxx_messageInfo_None.Size(m)
 }
-func (m *Test) XXX_DiscardUnknown() {
-	xxx_messageInfo_Test.DiscardUnknown(m)
+func (m *None) XXX_DiscardUnknown() {
+	xxx_messageInfo_None.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_Test proto.InternalMessageInfo
+var xxx_messageInfo_None proto.InternalMessageInfo
 
-func (m *Test) GetSomeint() int32 {
+type GetInvoiceRequest struct {
+	ObuID                int32    `protobuf:"varint,1,opt,name=ObuID,proto3" json:"ObuID,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *GetInvoiceRequest) Reset()         { *m = GetInvoiceRequest{} }
+func (m *GetInvoiceRequest) String() string { return proto.CompactTextString(m) }
+func (*GetInvoiceRequest) ProtoMessage()    {}
+func (*GetInvoiceRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_17e2b1304cc35acb, []int{1}
+}
+
+func (m *GetInvoiceRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetInvoiceRequest.Unmarshal(m, b)
+}
+func (m *GetInvoiceRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetInvoiceRequest.Marshal(b, m, deterministic)
+}
+func (m *GetInvoiceRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetInvoiceRequest.Merge(m, src)
+}
+func (m *GetInvoiceRequest) XXX_Size() int {
+	return xxx_messageInfo_GetInvoiceRequest.Size(m)
+}
+func (m *GetInvoiceRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetInvoiceRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetInvoiceRequest proto.InternalMessageInfo
+
+func (m *GetInvoiceRequest) GetObuID() int32 {
 	if m != nil {
-		return m.Someint
+		return m.ObuID
+	}
+	return 0
+}
+
+type AggregateRequest struct {
+	ObuID                int32    `protobuf:"varint,1,opt,name=ObuID,proto3" json:"ObuID,omitempty"`
+	Value                float64  `protobuf:"fixed64,2,opt,name=Value,proto3" json:"Value,omitempty"`
+	Unix                 int64    `protobuf:"varint,3,opt,name=Unix,proto3" json:"Unix,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *AggregateRequest) Reset()         { *m = AggregateRequest{} }
+func (m *AggregateRequest) String() string { return proto.CompactTextString(m) }
+func (*AggregateRequest) ProtoMessage()    {}
+func (*AggregateRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_17e2b1304cc35acb, []int{2}
+}
+
+func (m *AggregateRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_AggregateRequest.Unmarshal(m, b)
+}
+func (m *AggregateRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_AggregateRequest.Marshal(b, m, deterministic)
+}
+func (m *AggregateRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_AggregateRequest.Merge(m, src)
+}
+func (m *AggregateRequest) XXX_Size() int {
+	return xxx_messageInfo_AggregateRequest.Size(m)
+}
+func (m *AggregateRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_AggregateRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_AggregateRequest proto.InternalMessageInfo
+
+func (m *AggregateRequest) GetObuID() int32 {
+	if m != nil {
+		return m.ObuID
+	}
+	return 0
+}
+
+func (m *AggregateRequest) GetValue() float64 {
+	if m != nil {
+		return m.Value
+	}
+	return 0
+}
+
+func (m *AggregateRequest) GetUnix() int64 {
+	if m != nil {
+		return m.Unix
 	}
 	return 0
 }
 
 func init() {
-	proto.RegisterType((*Test)(nil), "Test")
+	proto.RegisterType((*None)(nil), "None")
+	proto.RegisterType((*GetInvoiceRequest)(nil), "GetInvoiceRequest")
+	proto.RegisterType((*AggregateRequest)(nil), "AggregateRequest")
 }
 
 func init() {
@@ -68,13 +156,19 @@ func init() {
 }
 
 var fileDescriptor_17e2b1304cc35acb = []byte{
-	// 124 bytes of a gzipped FileDescriptorProto
+	// 212 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x2a, 0xa9, 0x2c, 0x48,
-	0x2d, 0xd6, 0x2f, 0x00, 0x53, 0x7a, 0x05, 0x45, 0xf9, 0x25, 0xf9, 0x4a, 0x0a, 0x5c, 0x2c, 0x21,
-	0xa9, 0xc5, 0x25, 0x42, 0x12, 0x5c, 0xec, 0xc5, 0xf9, 0xb9, 0xa9, 0x99, 0x79, 0x25, 0x12, 0x8c,
-	0x0a, 0x8c, 0x1a, 0xac, 0x41, 0x30, 0xae, 0x93, 0x71, 0x94, 0x61, 0x7a, 0x66, 0x49, 0x46, 0x69,
-	0x92, 0x5e, 0x72, 0x7e, 0xae, 0x7e, 0x62, 0x71, 0x71, 0x66, 0x4e, 0x56, 0x62, 0x52, 0xa5, 0x7e,
-	0x49, 0x51, 0x62, 0x5a, 0x66, 0xb2, 0x6e, 0x49, 0x7e, 0x4e, 0x8e, 0x6e, 0x72, 0x62, 0x4e, 0x72,
-	0x69, 0x4e, 0x62, 0x49, 0x7e, 0x91, 0x3e, 0xd8, 0xf0, 0x24, 0x36, 0xb0, 0xe9, 0xc6, 0x80, 0x00,
-	0x00, 0x00, 0xff, 0xff, 0x3c, 0x42, 0x91, 0x39, 0x73, 0x00, 0x00, 0x00,
+	0x2d, 0xd6, 0x2f, 0x00, 0x53, 0x7a, 0x05, 0x45, 0xf9, 0x25, 0xf9, 0x4a, 0x6c, 0x5c, 0x2c, 0x7e,
+	0xf9, 0x79, 0xa9, 0x4a, 0x9a, 0x5c, 0x82, 0xee, 0xa9, 0x25, 0x9e, 0x79, 0x65, 0xf9, 0x99, 0xc9,
+	0xa9, 0x41, 0xa9, 0x85, 0xa5, 0xa9, 0xc5, 0x25, 0x42, 0x22, 0x5c, 0xac, 0xfe, 0x49, 0xa5, 0x9e,
+	0x2e, 0x12, 0x8c, 0x0a, 0x8c, 0x1a, 0xac, 0x41, 0x10, 0x8e, 0x52, 0x10, 0x97, 0x80, 0x63, 0x7a,
+	0x7a, 0x51, 0x6a, 0x7a, 0x62, 0x09, 0x7e, 0x95, 0x20, 0xd1, 0xb0, 0xc4, 0x9c, 0xd2, 0x54, 0x09,
+	0x26, 0x05, 0x46, 0x0d, 0xc6, 0x20, 0x08, 0x47, 0x48, 0x88, 0x8b, 0x25, 0x34, 0x2f, 0xb3, 0x42,
+	0x82, 0x59, 0x81, 0x51, 0x83, 0x39, 0x08, 0xcc, 0x36, 0x32, 0xe6, 0xe2, 0x82, 0x99, 0x99, 0x5f,
+	0x24, 0xa4, 0xca, 0xc5, 0x09, 0xb7, 0x41, 0x48, 0x50, 0x0f, 0xdd, 0x36, 0x29, 0x56, 0x3d, 0x90,
+	0x9b, 0x9d, 0x8c, 0xa3, 0x0c, 0xd3, 0x33, 0x4b, 0x32, 0x4a, 0x93, 0xf4, 0x92, 0xf3, 0x73, 0xf5,
+	0x13, 0x8b, 0x8b, 0x33, 0x73, 0xb2, 0x12, 0x93, 0x2a, 0xf5, 0x4b, 0x8a, 0x12, 0xd3, 0x32, 0x93,
+	0x75, 0x4b, 0xf2, 0x73, 0x72, 0x74, 0x93, 0x13, 0x73, 0x92, 0x4b, 0x73, 0x40, 0xa6, 0xea, 0x83,
+	0xbd, 0x9d, 0xc4, 0x06, 0xf6, 0xb7, 0x31, 0x20, 0x00, 0x00, 0xff, 0xff, 0x16, 0x4c, 0x2b, 0x64,
+	0x0d, 0x01, 0x00, 0x00,
 }

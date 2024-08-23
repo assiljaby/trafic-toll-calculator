@@ -4,20 +4,24 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"net"
 	"net/http"
 	"strconv"
 
 	"github.com/assiljaby/trafic-toll-calculator/types"
+	"google.golang.org/grpc"
 )
 
 func main() {
-	listenPort := flag.String("listenPort", ":3000", "listening port")
+	httpListenPort := flag.String("httpListenPort", ":3000", "listening port for HTTP")
+	grpcListenPort := flag.String("grpcListenPort", ":3001", "listening portfor GRPC")
 	flag.Parse()
 	store := NewMemoryStore()
 	svc := NewInvoiceAggregator(store)
 	svc = NewLoggerMiddleware(svc)
 
-	makeHttpTransport(*listenPort, svc)
+	go makeGRPCTransport(*grpcListenPort, svc)
+	makeHttpTransport(*httpListenPort, svc)
 }
 
 func makeHttpTransport(listenPort string, svc Aggregator) {
@@ -25,6 +29,24 @@ func makeHttpTransport(listenPort string, svc Aggregator) {
 	http.HandleFunc("/aggregate", handleAggragate(svc))
 	http.HandleFunc("/invoice", handleGetInvoice(svc))
 	http.ListenAndServe(listenPort, nil)
+}
+
+func makeGRPCTransport(listenPort string, svc Aggregator) error {
+	fmt.Println("HTTP transport running on port:", listenPort)
+
+	// Make TCP Listener
+	ln, err := net.Listen("TCP", listenPort)
+	if err != nil {
+		return err
+	}
+	defer ln.Close()
+
+	// Make GRPC server
+	server := grpc.NewServer([]grpc.ServerOption{}...)
+
+	// Registering grpc to the grpc package
+	types.RegisterAggregatorServer(server, NewGRPCAggregatorServer(svc))
+	return server.Serve(ln)
 }
 
 func handleGetInvoice(svc Aggregator) http.HandlerFunc {
