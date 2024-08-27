@@ -18,7 +18,13 @@ func main() {
 	csvc = NewCalculateService()
 	csvc = NewLoggerMiddleware(csvc)
 
-	kConsumer, err := NewKafkaConsumer(topic, csvc, client.NewHTTPClient(aggEndpoint))
+	httpClient := client.NewHTTPClient(aggEndpoint)
+	// grpcClient, err := client.NewGRPCClient(aggEndpoint)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+
+	kConsumer, err := NewKafkaConsumer(topic, csvc, httpClient)
 	if err != nil {
 		log.Fatal(err)
 	}

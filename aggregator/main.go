@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -9,9 +8,7 @@ import (
 	"net"
 	"net/http"
 	"strconv"
-	"time"
 
-	"github.com/assiljaby/trafic-toll-calculator/aggregator/client"
 	"github.com/assiljaby/trafic-toll-calculator/types"
 	"google.golang.org/grpc"
 )
@@ -27,18 +24,18 @@ func main() {
 	go func() {
 		log.Fatal(makeGRPCTransport(*grpcListenPort, svc))
 	}()
-	time.Sleep(time.Second * 2)
-	c, err := client.NewGRPCClient(*grpcListenPort)
-	if err != nil {
-		log.Fatal(err)
-	}
-	if _, err = c.Aggregate(context.Background(), &types.AggregateRequest{
-		ObuID: 1,
-		Value: 15.15,
-		Unix:  time.Now().UnixNano(),
-	}); err != nil {
-		log.Fatal(err)
-	}
+	// time.Sleep(time.Second * 2)
+	// c, err := client.NewGRPCClient(*grpcListenPort)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	// if err = c.Aggregate(context.Background(), &types.AggregateRequest{
+	// 	ObuID: 1,
+	// 	Value: 15.15,
+	// 	Unix:  time.Now().UnixNano(),
+	// }); err != nil {
+	// 	log.Fatal(err)
+	// }
 	log.Fatal(makeHttpTransport(*httpListenPort, svc))
 }
 
