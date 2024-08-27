@@ -47,5 +47,6 @@ This project is a microservices-based system designed to calculate traffic tolls
 - [x] Implement logger middleware for the invoice aggregator
 - [x] Implement HTTP transport
 - [x] Implement GRPC and proto buffers
+- [ ] Implement client facing HTTP gateway
 - [ ] Implement instrumentation for all the services
 - [ ] Implement gokit
