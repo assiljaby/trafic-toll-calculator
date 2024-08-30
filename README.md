@@ -48,8 +48,6 @@ This project is a microservices-based system designed to calculate traffic tolls
     ```bash
     ./prometheus --config.file=your_config.yml
 
-**Work in progress...**
-
 ## TODO
 - [x] Simulate the OBU
 - [x] Implement data receiver
