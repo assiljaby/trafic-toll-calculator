@@ -34,7 +34,20 @@ This project is a microservices-based system designed to calculate traffic tolls
     
     docker run -d -p 9092:9092 --name broker apache/kafka:latest
 
-    
+3. **Make Prometheus:**
+    ```bash
+    git clone https://github.com/prometheus/prometheus.git
+    cd prometheus
+    make build
+
+4. **Installing prometheus golang client:**
+    ```bash
+    go get github.com/prometheus/client_golang/prometheus
+
+4. **Run Prometheus:**
+    ```bash
+    ./prometheus --config.file=your_config.yml
+
 **Work in progress...**
 
 ## TODO

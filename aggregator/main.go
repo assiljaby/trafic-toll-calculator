@@ -20,6 +20,7 @@ func main() {
 	flag.Parse()
 	store := NewMemoryStore()
 	svc := NewInvoiceAggregator(store)
+	svc = NewMetricsMiddleware(svc)
 	svc = NewLoggerMiddleware(svc)
 
 	go func() {
