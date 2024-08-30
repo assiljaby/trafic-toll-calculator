@@ -10,6 +10,7 @@ import (
 	"strconv"
 
 	"github.com/assiljaby/trafic-toll-calculator/types"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"google.golang.org/grpc"
 )
 
@@ -43,6 +44,7 @@ func makeHttpTransport(listenPort string, svc Aggregator) error {
 	fmt.Println("HTTP transport running on port:", listenPort)
 	http.HandleFunc("/aggregate", handleAggragate(svc))
 	http.HandleFunc("/invoice", handleGetInvoice(svc))
+	http.Handle("/metrics", promhttp.Handler())
 	return http.ListenAndServe(listenPort, nil)
 }
 
